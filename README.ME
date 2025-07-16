@@ -1,0 +1,154 @@
+# PDF Report Generator API
+
+A web-based PDF report generator that converts JSON input into beautifully formatted PDF reports, built for Vercel deployment.
+
+## 🚀 Quick Start
+
+### 1. Clean Installation
+```bash
+# Remove existing node_modules and package-lock.json
+rm -rf node_modules package-lock.json
+
+# Install dependencies
+npm install
+
+# Or if you prefer yarn
+yarn install
+```
+
+### 2. Local Development
+```bash
+# Start development server
+npm run dev
+
+# The app will be available at http://localhost:3000
+```
+
+### 3. Deploy to Vercel
+```bash
+# Deploy to Vercel
+npm run deploy
+
+# Or use Vercel CLI directly
+npx vercel --prod
+```
+
+## 📁 Project Structure
+```
+pdf-generator-api/
+├── api/
+│   └── generate-pdf.js      # Serverless PDF generation endpoint
+├── index.html               # Web interface
+├── sample-input.json        # Example JSON structure
+├── package.json            # Dependencies and scripts
+├── vercel.json             # Vercel configuration
+├── .npmrc                  # npm configuration
+└── README.md               # This file
+```
+
+## 🎯 Features
+
+- **Drag & Drop Upload**: Easy JSON file upload interface
+- **Live Preview**: Instant PDF preview in the browser
+- **Download**: One-click PDF download
+- **Responsive Design**: Works on desktop and mobile
+- **Error Handling**: Comprehensive validation and error messages
+- **MathJax Support**: Renders mathematical equations
+
+## 📋 JSON Input Structure
+
+Your JSON file should follow this structure:
+
+```json
+{
+  "query": {
+    "text": "Your query text here"
+  },
+  "metadata": {
+    "timestamp": "2025-01-16T10:30:00.000Z",
+    "logo": "https://your-logo-url.com/logo.svg"
+  },
+  "reasoning": {
+    "general_script": [
+      {
+        "heading": "Section Title"
+      },
+      {
+        "paragraph": "Your content here..."
+      },
+      {
+        "bullet": ["Point 1", "Point 2", "Point 3"]
+      },
+      {
+        "latex": "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}"
+      }
+    ]
+  },
+  "result": {
+    "data": {
+      "concept": [...],
+      "practiceAssignment": [...],
+      "practiceTest": [...],
+      "formula": [...]
+    }
+  }
+}
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+1. **npm warnings**: The deprecation warnings are normal and don't affect functionality
+2. **Vercel deployment fails**: Make sure your Node.js version is 18+ 
+3. **PDF generation slow**: The first request might be slower due to cold start
+
+### Dependencies Issues
+If you encounter dependency conflicts:
+```bash
+# Clear npm cache
+npm cache clean --force
+
+# Delete node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+## 🌐 API Endpoints
+
+### POST `/api/generate-pdf`
+Generates a PDF from JSON input.
+
+**Request Body**: JSON object with the structure shown above
+**Response**: PDF file (application/pdf)
+
+## 📱 Usage
+
+1. Open the web interface
+2. Upload or drag-drop your JSON file
+3. Click "Generate PDF" to create the report
+4. Preview the PDF in the right panel
+5. Click "Download PDF" to save the file
+
+## 🎨 Customization
+
+You can customize the PDF styling by modifying the CSS in the `generateHTML` function inside `api/generate-pdf.js`.
+
+## 🔒 Security
+
+- File validation ensures only JSON files are processed
+- Input sanitization prevents XSS attacks
+- No file storage on server (stateless processing)
+
+## 📞 Support
+
+For issues or questions, please check:
+1. Ensure your JSON follows the correct structure
+2. Check browser console for error messages
+3. Verify your internet connection for external resources
+
+## 🚀 Performance
+
+- Cold start: ~3-5 seconds for first request
+- Warm requests: ~1-2 seconds
+- Maximum file size: 10MB JSON input
