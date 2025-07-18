@@ -2,6 +2,14 @@
 import puppeteer from 'puppeteer-core';
 import chromium from '@sparticuz/chromium';
 
+
+function validateInput(input) {
+  if (typeof input !== 'object' || input === null) return false;
+  if (!input.query || typeof input.query.text !== 'string') return false;
+  if (!input.result || !input.result.data) return false;
+  // Add more checks as needed for your structure
+  return true;
+}
 // Extract topic name for filename
 function extractTopic(queryText) {
   if (!queryText) return 'report';
@@ -225,6 +233,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'No input data provided' });
     }
 
+    // Validate input format
+    if (!validateInput(input)) {
+      return res.status(400).json({ error: 'Invalid input.json format' });
+    }
+
     const topic = extractTopic(input.query?.text);
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = `${topic}_report_${timestamp}.pdf`;
@@ -263,6 +276,8 @@ export default async function handler(req, res) {
       });
     });
 
+
+    
     // Generate PDF
     const pdfBuffer = await page.pdf({
       format: 'A4',
