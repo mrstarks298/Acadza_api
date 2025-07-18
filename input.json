@@ -1,0 +1,138 @@
+{
+    "query": {
+        "text": "help me understand the formulas of chemical kinetics and give me an assignment of 35 questions, a test of 45 minutes and its formula sheet from it"
+    },
+    "result": {
+        "status": "ok",
+        "statusCode": 0,
+        "isSuccessful": true,
+        "statusMessage": "Success",
+        "data": {
+            "concept": [
+                {
+                    "conceptLink": "https://acadza.com/dosts/share-concept-basket/view/cb-0436a141-488d-4981-8ca4-f868061c1bb1",
+                    "conceptTitle": "Chemical kinetics Concept Basket",
+                    "script": "Step 1: Begin with a thorough exploration of all concepts in <b>Chemical kinetics</b>. This Concept Dost will guide you through every subtopic, ensuring you understand the foundational principles and advanced ideas alike. Use this as your base to clarify doubts and build a strong conceptual framework. If you feel stuck, revisit the explanations and make notes. Remember, a solid grasp of concepts is the key to solving even the trickiest problems in this chapter!"
+                }
+            ],
+            "practiceAssignment": [
+                {
+                    "practiceAssignmentLink": "https://www.acadza.com/dosts/practice/shareble-practice/68760000f0cd563200bc492c",
+                    "practiceAssignmentTitle": "Chemical kinetics Assignment",
+                    "script": "Step 2: Tackle a focused Practice Assignment on <b>Chemical kinetics</b> with a total of <b>35 questions</b> (split as <b>20 SCQs</b>, <b>10 MCQs</b>, and <b>5 Integer Questions</b>). The difficulty is set to <b>easy</b> by default, and the assignment is not NCERT-based. This assignment is designed to reinforce your learning and help you identify weak spots. Attempt each question sincerely, and review your mistakes to strengthen your understanding. Feel free to adjust the question split or difficulty if you want more challenge!"
+                }
+            ],
+            "practiceTest": [
+                {
+                    "practiceTestLink": "https://www.acadza.com/dosts/practice/shareble-practice/68760000ca6e1232067ad871",
+                    "practiceTestTitle": "Chemical kinetics Test",
+                    "script": "Step 3: Take a Practice Test on <b>Chemical kinetics</b> with a duration of <b>45 minutes</b>, <b>easy</b> difficulty, and the <b>Mains</b> paper pattern. This test is not NCERT-based. Use this as a simulation of real exam conditions to assess your speed and accuracy. After the test, analyze your performance to pinpoint areas needing revision. Remember, regular timed practice is crucial for building exam temperament and time management skills!"
+                }
+            ],
+            "formula": [
+                {
+                    "formulaLink": "https://www.acadza.com/dosts/formula-sheet/68760001f0cd563200bc492e",
+                    "formulaTitle": "Chemical kinetics Formula Sheet",
+                    "script": "Step 4: Access the complete Formula Sheet for <b>Chemical kinetics</b>. This Formula Dost compiles all essential formulas from every subtopic, making it your go-to resource for quick revision and last-minute prep. Keep this sheet handy while practicing and revising to ensure you never miss a key relation or equation. Regularly reviewing formulas will boost your confidence and help you recall them instantly during exams!"
+                }
+            ]
+        }
+    },
+    "reasoning": {
+        "main_script": "",
+        "analysis": "The student explicitly requested a concept Dost, a practice assignment of 35 questions, a practice test of 45 minutes, and a formula Dost for the chapter 'Chemical kinetics', covering all subtopics. The retrieved chunks confirm the presence of the 'Chemical kinetics' chapter and its subtopics, so the full chapter is included in each DOST. Defaults are used for difficulty and paper pattern as not specified otherwise.",
+        "tone": "motivated",
+        "general_script": [
+            {
+                "heading": "Key Formulas in Chemical Kinetics"
+            },
+            {
+                "subheading": "1. Rate of Reaction"
+            },
+            {
+                "latex": "\\[ \\text{Rate} = -\\frac{d[A]}{dt} = k[A]^n \\]"
+            },
+            {
+                "paragraph": "The rate of a chemical reaction is defined as the change in concentration of a reactant or product per unit time. For a general reaction \\( A \\rightarrow \\, \\text{Products} \\), the rate law is \\( \\text{Rate} = k[A]^n \\), where \\( k \\) is the rate constant and \\( n \\) is the order of the reaction."
+            },
+            {
+                "subheading": "2. Integrated Rate Laws"
+            },
+            {
+                "bold": "Zero Order:"
+            },
+            {
+                "latex": "\\[ [A]_t = [A]_0 - kt \\]"
+            },
+            {
+                "bold": "First Order:"
+            },
+            {
+                "latex": "\\[ [A]_t = [A]_0 e^{-kt} \\]"
+            },
+            {
+                "latex": "\\[ k = \\frac{1}{t} \\ln \\left( \\frac{[A]_0}{[A]_t} \\right) \\]"
+            },
+            {
+                "bold": "Second Order:"
+            },
+            {
+                "latex": "\\[ \\frac{1}{[A]_t} = \\frac{1}{[A]_0} + kt \\]"
+            },
+            {
+                "subheading": "3. Half-Life (\\( t_{1/2} \\))"
+            },
+            {
+                "bold": "First Order:"
+            },
+            {
+                "latex": "\\[ t_{1/2} = \\frac{0.693}{k} \\]"
+            },
+            {
+                "bold": "Zero Order:"
+            },
+            {
+                "latex": "\\[ t_{1/2} = \\frac{[A]_0}{2k} \\]"
+            },
+            {
+                "bold": "Second Order:"
+            },
+            {
+                "latex": "\\[ t_{1/2} = \\frac{1}{k[A]_0} \\]"
+            },
+            {
+                "subheading": "4. Arrhenius Equation"
+            },
+            {
+                "latex": "\\[ k = A e^{-E_a/RT} \\]"
+            },
+            {
+                "paragraph": "Where \\( k \\) is the rate constant, \\( A \\) is the frequency factor, \\( E_a \\) is the activation energy, \\( R \\) is the gas constant, and \\( T \\) is the temperature in Kelvin."
+            },
+            {
+                "subheading": "5. Relationship Between Rate Constant and Temperature"
+            },
+            {
+                "latex": "\\[ \\ln \\left( \\frac{k_2}{k_1} \\right) = \\frac{E_a}{R} \\left( \\frac{1}{T_1} - \\frac{1}{T_2} \\right) \\]"
+            },
+            {
+                "callout": {
+                    "style": "tip",
+                    "content": "Remember: Always check the units of the rate constant to determine the order of the reaction!"
+                }
+            },
+            {
+                "quote": {
+                    "content": "Before you start some work, always ask yourself three questions – Why am I doing it, What the results might be, and Will I be successful. Only when you think deeply and find satisfactory answers to these questions, go ahead.",
+                    "author": "Chanakya"
+                }
+            },
+            {
+                "heading": "Motivational Note"
+            },
+            {
+                "paragraph": "Chemical kinetics is all about understanding how fast reactions happen and what factors affect their speed. Mastering the formulas will help you solve problems quickly and accurately. Keep practicing and you'll ace this topic! 🚀"
+            }
+        ]
+    }
+}
