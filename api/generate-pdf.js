@@ -4,15 +4,17 @@ import chromium from '@sparticuz/chromium';
 
 
 function validateInput(input) {
-  if (typeof input !== 'object' || input === null) return false;
-  if (!input.query || typeof input.query.text !== 'string') return false;
-  if (!input.result || !input.result.data) return false;
-  // Add more checks as needed for your structure
+  if (typeof input !== 'object' || input === null) { return false; }
+  if (!input.query || typeof input.query !== 'object') { return false; }
+  if (typeof input.query.text !== 'string') { return false; }
+  if (!input.result || typeof input.result !== 'object') { return false; }
+  if (!input.result.data || typeof input.result.data !== 'object') { return false; }
+    // All other fields are optional and can be missing or empty
   return true;
 }
 // Extract topic name for filename
 function extractTopic(queryText) {
-  if (!queryText) return 'report';
+  if (!queryText) { return 'report'; }
   const words = queryText.toLowerCase().split(/\s+/);
   const keywords = words.filter(w => w.length > 3);
   return keywords[0] || 'report';
@@ -175,10 +177,10 @@ function generateHTML(input) {
 
   // General script
   general_script.forEach(block => {
-    if (block.heading) html += `<h1>${block.heading}</h1>`;
-    if (block.subheading) html += `<h2>${block.subheading}</h2>`;
-    if (block.paragraph) html += `<p>${block.paragraph}</p>`;
-    if (block.bold) html += `<p><strong>${block.bold}</strong></p>`;
+  if (block.heading) { html += `<h1>${block.heading}</h1>`; }
+  if (block.subheading) { html += `<h2>${block.subheading}</h2>`; }
+  if (block.paragraph) { html += `<p>${block.paragraph}</p>`; }
+  if (block.bold) { html += `<p><strong>${block.bold}</strong></p>`; }
     if (block.bullet) {
       html += `<ul>`;
       block.bullet.forEach(b => html += `<li>${b}</li>`);
@@ -207,10 +209,10 @@ function generateHTML(input) {
     `;
   }
 
-  if (concept?.length) html += renderCard(concept[0], 'conceptTitle', 'conceptLink', 'Concept');
-  if (practiceAssignment?.length) html += renderCard(practiceAssignment[0], 'practiceAssignmentTitle', 'practiceAssignmentLink', 'Assignment');
-  if (practiceTest?.length) html += renderCard(practiceTest[0], 'practiceTestTitle', 'practiceTestLink', 'Test');
-  if (formula?.length) html += renderCard(formula[0], 'formulaTitle', 'formulaLink', 'Formula Sheet');
+  if (concept?.length) { html += renderCard(concept[0], 'conceptTitle', 'conceptLink', 'Concept'); }
+  if (practiceAssignment?.length) { html += renderCard(practiceAssignment[0], 'practiceAssignmentTitle', 'practiceAssignmentLink', 'Assignment'); }
+  if (practiceTest?.length) { html += renderCard(practiceTest[0], 'practiceTestTitle', 'practiceTestLink', 'Test'); }
+  if (formula?.length) { html += renderCard(formula[0], 'formulaTitle', 'formulaLink', 'Formula Sheet'); }
 
   html += `
     <div class="footer">© 2025 Acadza Technologies — Auto-generated report</div>
