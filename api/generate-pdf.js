@@ -229,7 +229,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const input = req.body;
+          let input = req.body;
+      
+      // unwrap if frontend wraps JSON inside { "input": { ... } }
+      if (input?.input) {
+        input = input.input;
+      }
+
     
     if (!input) {
       return res.status(400).json({ error: 'No input data provided' });
