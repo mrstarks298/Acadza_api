@@ -1,28 +1,19 @@
 {
-  "main_issue": "libnspr4.so library missing in Vercel serverless environment",
-  "root_cause": "Standard puppeteer package too large for serverless deployment",
-  "working_solutions": [
-    {
-      "approach": "Use @sparticuz/chromium with puppeteer-core",
-      "dependencies": {
-        "puppeteer-core": "^22.x.x",
-        "@sparticuz/chromium": "^132.0.0 - ^138.0.2",
-        "development_only": "puppeteer for local development"
-      },
-      "configuration": "Conditional browser launch based on environment"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/generate-pdf.js": {
+      "maxDuration": 30,
+      "memory": 1024
     },
-    {
-      "approach": "Use @sparticuz/chromium-min for smaller bundle",
-      "dependencies": {
-        "puppeteer-core": "^22.x.x",
-        "@sparticuz/chromium-min": "^132.0.0 - ^138.0.2"
-      },
-      "configuration": "Remote chromium binary download"
+    "app/api/**/*": {
+      "maxDuration": 30,
+      "memory": 1024
     }
-  ],
-  "vercel_configuration": {
-    "maxDuration": "Up to 300s default, 800s max with Pro",
-    "memory": "Up to 3008MB",
-    "next_config": "outputFileTracingIncludes for proper bundling"
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
 }
