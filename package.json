@@ -2,6 +2,7 @@
   "name": "pdf-generator-api",
   "version": "1.0.0",
   "description": "PDF Report Generator API for Vercel",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "vercel dev",
@@ -10,9 +11,7 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^119.0.0",
-    "puppeteer": "^22.15.0",
-    "puppeteer-core": "^22.0.0"
+    "puppeteer": "^22.15.0"
   },
   "devDependencies": {
     "vercel": "^33.0.0"
@@ -23,9 +22,5 @@
   "overrides": {
     "glob": "^10.0.0",
     "rimraf": "^5.0.0"
-  },
-  {
-  "type": "module"
-}
-
+  }
 }
