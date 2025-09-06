@@ -32,7 +32,7 @@ function generateHTML(input) {
     <title>${userQuery}</title>
     <script>
       window.MathJax = {
-        tex: { inlineMath: [['$', '$'], ['\\\\(', '\\\\)']] },
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
         svg: { fontCache: 'global' }
       };
     </script>
@@ -173,8 +173,8 @@ function generateHTML(input) {
       html += `</ul>`;
     }
     if (block.latex) {
-      const latex = block.latex.replace(/\\\[|\\\]/g, '');
-      html += `<p><span>\\(${latex}\\)</span></p>`;
+      const latex = block.latex.replace(/\\\||\\\\]/g, '');
+      html += `<p><span>\\(${latex}\\)</span</p>`;
     }
     if (block.callout) {
       html += `<div class="callout">${block.callout.content}</div>`;
@@ -207,6 +207,14 @@ function generateHTML(input) {
   `;
 
   return html;
+}
+
+function validateInput(input) {
+  if (typeof input !== 'object' || input === null) return false;
+  if (!input.query || typeof input.query.text !== 'string') return false;
+  if (!input.result || !input.result.data) return false;
+  // Add more checks as needed for your structure
+  return true;
 }
 
 // Create server
@@ -248,7 +256,14 @@ const server = http.createServer(async (req, res) => {
     req.on('end', async () => {
       try {
         const input = JSON.parse(body);
-        
+
+        // Validate input format
+        if (!validateInput(input)) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid input.json format' }));
+          return;
+        }
+
         // Generate PDF
         const browser = await puppeteer.launch({
           headless: 'new',
@@ -297,7 +312,7 @@ const server = http.createServer(async (req, res) => {
       } catch (error) {
         console.error('PDF generation error:', error);
         res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'PDF generation failed' }));
+        res.end(JSON.stringify({ error: 'PDF generation failed', details: error.message }));
       }
     });
     return;
