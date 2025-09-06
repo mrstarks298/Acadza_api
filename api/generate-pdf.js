@@ -44,7 +44,7 @@ function generateHTML(input) {
     <title>${userQuery}</title>
     <script>
       window.MathJax = {
-        tex: { inlineMath: [['$', '$'], ['\\\\(', '\\\\)']] },
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
         svg: { fontCache: 'global' }
       };
     </script>
@@ -185,8 +185,8 @@ function generateHTML(input) {
       html += `</ul>`;
     }
     if (block.latex) {
-      const latex = block.latex.replace(/\\\[|\\\]/g, '');
-      html += `<p><span>\\(${latex}\\)</span></p>`;
+      const latex = block.latex.replace(/\\\[|\\\\]/g, '');
+      html += `<p><span>\\(${latex}\\)</span ></p>`;
     }
     if (block.callout) {
       html += `<div class="callout">${block.callout.content}</div>`;
