@@ -231,7 +231,7 @@ export default async function handler(req, res) {
   try {
           let input = req.body;
       
-      // unwrap if frontend wraps JSON inside { "input": { ... } }
+      // unwrap if frontend nextwraps JSON inside { "input": { ... } }
       if (input?.input) {
         input = input.input;
       }
@@ -251,7 +251,7 @@ export default async function handler(req, res) {
     const filename = `${topic}_report_${timestamp}.pdf`;
 
     // Launch browser
-    const browser = await puppeteer.launch({
+    = await puppeteer.launch({
       args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(),
