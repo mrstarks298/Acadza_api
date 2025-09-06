@@ -1,16 +1,40 @@
 // api/generate-pdf.js
-import puppeteer from 'puppeteer-core';
-import chromium from '@sparticuz/chromium';
+import { NextRequest, NextResponse } from 'next/server';
 
+// Set maximum duration for this function
+export const maxDuration = 30; // 30 seconds
+export const dynamic = 'force-dynamic';
+
+// Dynamic imports to prevent bundling issues
+let puppeteer;
+let chromium;
+
+async function initializePuppeteer() {
+  // Check if running locally or on Vercel
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  if (isProduction) {
+    // Production: Use puppeteer-core with @sparticuz/chromium
+    const puppeteerCore = await import('puppeteer-core');
+    const chromiumPackage = await import('@sparticuz/chromium');
+
+    puppeteer = puppeteerCore.default;
+    chromium = chromiumPackage.default;
+  } else {
+    // Development: Use regular puppeteer
+    const puppeteerFull = await import('puppeteer');
+    puppeteer = puppeteerFull.default;
+    chromium = null;
+  }
+}
 
 function validateInput(input) {
   if (typeof input !== 'object' || input === null) return false;
   if (!input.query || typeof input.query.text !== 'string') return false;
   if (!input.result || !input.result.data) return false;
-  // Add more checks as needed for your structure
   return true;
 }
-// Extract topic name for filename
+
 function extractTopic(queryText) {
   if (!queryText) return 'report';
   const words = queryText.toLowerCase().split(/\s+/);
@@ -18,7 +42,6 @@ function extractTopic(queryText) {
   return keywords[0] || 'report';
 }
 
-// Generate HTML from input
 function generateHTML(input) {
   const general_script = input?.reasoning?.general_script || [];
   const { concept, practiceAssignment, practiceTest, formula } = input.result?.data || {};
@@ -26,7 +49,7 @@ function generateHTML(input) {
   const rawTimestamp = input.metadata?.timestamp || new Date().toISOString();
   const date = new Date(rawTimestamp).toLocaleString('en-IN', {
     day: '2-digit',
-    month: 'short',
+    month: 'short', 
     year: 'numeric',
     weekday: 'short',
     hour: '2-digit',
@@ -173,7 +196,7 @@ function generateHTML(input) {
     <div class="section-label">Response:</div>
 `;
 
-  // General script
+  // General script content
   general_script.forEach(block => {
     if (block.heading) html += `<h1>${block.heading}</h1>`;
     if (block.subheading) html += `<h2>${block.subheading}</h2>`;
@@ -186,7 +209,7 @@ function generateHTML(input) {
     }
     if (block.latex) {
       const latex = block.latex.replace(/\\\[|\\\\]/g, '');
-      html += `<p><span>\\(${latex}\\)</span ></p>`;
+      html += `<p><span>\\(${latex}\\)</span></p>`;
     }
     if (block.callout) {
       html += `<div class="callout">${block.callout.content}</div>`;
@@ -197,7 +220,7 @@ function generateHTML(input) {
     }
   });
 
-  // Cards
+  // Cards section
   function renderCard(item, titleKey, linkKey, label) {
     return `
       <div class="test-box">
@@ -221,35 +244,56 @@ function generateHTML(input) {
   return html;
 }
 
-export default async function handler(req, res) {
+export default async function handler(req) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
   }
 
   try {
-    const input = req.body;
-    
+    await initializePuppeteer();
+
+    const input = await req.json();
+
     if (!input) {
-      return res.status(400).json({ error: 'No input data provided' });
+      return NextResponse.json({ error: 'No input data provided' }, { status: 400 });
     }
 
-    // Validate input format
     if (!validateInput(input)) {
-      return res.status(400).json({ error: 'Invalid input.json format' });
+      return NextResponse.json({ error: 'Invalid input format' }, { status: 400 });
     }
 
     const topic = extractTopic(input.query?.text);
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = `${topic}_report_${timestamp}.pdf`;
 
-    // Launch browser
-    const browser = await puppeteer.launch({
-      args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    });
+    let browser;
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    if (isProduction) {
+      // Production configuration for Vercel
+      browser = await puppeteer.launch({
+        args: [
+          ...chromium.args,
+          '--hide-scrollbars',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor',
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-gpu',
+          '--disable-dev-shm-usage'
+        ],
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+      });
+    } else {
+      // Local development configuration
+      browser = await puppeteer.launch({
+        headless: 'new',
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+    }
 
     const page = await browser.newPage();
     const html = generateHTML(input);
@@ -276,9 +320,6 @@ export default async function handler(req, res) {
       });
     });
 
-
-    
-    // Generate PDF
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
@@ -287,16 +328,20 @@ export default async function handler(req, res) {
 
     await browser.close();
 
-    // Set response headers
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.setHeader('Content-Length', pdfBuffer.length);
-
-    // Send PDF buffer
-    res.send(pdfBuffer);
+    // Return PDF as response
+    return new NextResponse(pdfBuffer, {
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Length': pdfBuffer.length.toString(),
+      },
+    });
 
   } catch (error) {
     console.error('Error generating PDF:', error);
-    res.status(500).json({ error: 'Failed to generate PDF', details: error.message });
+    return NextResponse.json(
+      { error: 'Failed to generate PDF', details: error.message }, 
+      { status: 500 }
+    );
   }
 }
